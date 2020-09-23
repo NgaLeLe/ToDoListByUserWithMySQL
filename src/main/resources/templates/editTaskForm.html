@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit task</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+</head>
+<body><div class="container">
+	<form method="post" th:action="@{savemodif(idtask=${task.id_task}, iduserconnect=${user.id_user})}" >
+		<div class="form-group">
+			<p>
+				User_id &nbsp : <span th:text="${user.id_user}" class="text text-urgent"></span>
+			</p>
+			<p>
+				User name &nbsp : <span th:text="${user.username}" class="text text-urgent"></span>
+			</p>
+		</div>
+		<div class="form-group">
+			<label for="category1">Category</label> <input type="text"
+				class="form-control" id="category1" name="category"
+				th:value="${task.category}">
+		</div>
+		<div class="form-group">
+			<label for="title1">Title</label> <input type="text"
+				class="form-control" id="title1" name="title" th:value="${task.title}">
+		</div>
+		<div class="form-group">
+			<label for="label1">Label</label> <input type="text"
+				class="form-control" id="label1" name="label" th:value="${task.label}">
+		</div>
+
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a th:href="@{login(iduserconnect=${user.id_user})}" class="btn btn-warning">Cancel</a>
+	</form>
+	</div>
+</body>
+</html>
