@@ -18,7 +18,8 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-		<a class="navbar-brand" th:href="@{/index}"><i class="fa fa-th text-white"></i></a>
+		<a class="navbar-brand" th:href="@{/index}"><i
+			class="fa fa-th text-white"></i></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -28,19 +29,11 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link text-light-50" th:href="@{login(iduserconnect=${user.id_user})}">To
-						do <span class="sr-only">(current)</span>
+				<li class="nav-item active"><a class="nav-link text-light"
+					th:href="@{login(iduserconnect=${user.id_user})}">To do <span
+						class="sr-only">(current)</span>
 				</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"> Dropdown </a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Action</a> <a
-							class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div></li>
+				
 			</ul>
 			<form class="form-inline mr-5"
 				th:action="@{chercher(iduserconnect=${user.id_user})}" method="post">
@@ -49,8 +42,19 @@
 					name="motcle" th:value="${motcle}">
 				<button class="btn btn-outline-light my-3 my-sm-1" type="submit">Search</button>
 			</form>
-			<div class="text-primary rounded bg-white mr-1 ml-1">
-				<h6 th:text="${user.username}" class="p-1"></h6>
+			<div class="text-primary rounded bg-white mr-1 ml-1 dropdown">
+				<a class="nav-link dropdown-toggle text-bold" href="#"
+					id="dropdown-espace-user" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"
+					th:text="${user.username}"> </a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="#">Profile </a>
+					<a
+						class="dropdown-item" href="#">Modifier</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Logout</a>
+				</div>
+
 			</div>
 		</div>
 	</nav>
@@ -60,7 +64,9 @@
 				<div class="panel-heading">
 					<h2 class="text-primary">Tasks ...</h2>
 					<a th:href="@{ajouter(iduserconnect = ${user.id_user})}"
-						class="mt-4 mb-4"> <i class="fa fa-plus" aria-hidden="true"></i> Ajouter une tache </a>
+						class="mt-4 mb-4"> <i class="fa fa-plus" aria-hidden="true"></i>
+						Ajouter une tache
+					</a>
 				</div>
 			</div>
 
@@ -69,13 +75,21 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Category 
-						<!--  <a th:href="@{trierBy(iduserconnect = ${user.id_user},sortBy='category')}"
-						class="mt-4 mb-4"><i class="fa fa-sort" aria-hidden="true"></i> 
-						</a> -->
+						<th>Category <a
+							th:href="@{trierBy(iduserconnect = ${user.id_user},sortBy='category')}"
+							class="text-dark"> <i class="fa fa-sort" aria-hidden="true"></i>
+						</a>
 						</th>
-						<th>Title</th>
-						<th>Label</th>
+						<th>Title <a
+							th:href="@{trierBy(iduserconnect = ${user.id_user},sortBy='title')}"
+							class="text-dark"> <i class="fa fa-sort" aria-hidden="true"></i>
+						</a>
+						</th>
+						<th>Label <a
+							th:href="@{trierBy(iduserconnect = ${user.id_user},sortBy='label')}"
+							class="text-dark"> <i class="fa fa-sort" aria-hidden="true"></i>
+						</a>
+						</th>
 						<th>Action</th>
 						<th></th>
 					</tr>

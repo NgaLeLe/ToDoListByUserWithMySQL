@@ -9,17 +9,22 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.toDoList.entities.Task;
 
-
-
 @CrossOrigin("*")
 public interface TaskRepository extends JpaRepository<Task, Long> {
 	@Query("select t from task t where t.user.id_user = :x ")
 	public List<Task> findTaskByIdUser(@Param("x") Long id_user);
 
-	//or t.title like :y or t.label like :y
+	// or t.title like :y or t.label like :y
 	@Query("select t from task t where t.user.id_user = :x  and (t.category like :y or t.title like :y or t.label like :y)")
 	public List<Task> findTaskByIdUserByKey(@Param("x") Long id_user, @Param("y") String key);
 
-//	@Query("select t from task t where t.user.id_user = :x sort by t.:y")
-//	public List<Task> findTaskByIdUser(@Param("x") Long id_user, @Param("y") String keySort);
+	@Query("select t from task t where t.user.id_user = :x order by t.category")
+	public List<Task> findAllTaskSortByCategory(@Param("x") Long id_user);
+
+	@Query("select t from task t where t.user.id_user = :x order by t.title")
+	public List<Task> findAllTaskSortByTitle(@Param("x") Long id_user);
+
+	@Query("select t from task t where t.user.id_user = :x order by t.label")
+	public List<Task> findAllTaskSortByLabel(@Param("x") Long id_user);
+
 }

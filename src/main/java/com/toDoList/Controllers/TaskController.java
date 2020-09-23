@@ -40,9 +40,7 @@ public class TaskController {
 	}
 
 	@PostMapping({ "/login" })
-	public String postLoginForm(Model model, 
-			@RequestParam String username, 
-			@RequestParam String password) {
+	public String postLoginForm(Model model, @RequestParam String username, @RequestParam String password) {
 		if (ckUser.isValide(username, password)) {
 			System.out.println("username = " + username + "pass = " + password);
 			User userConnect = new User();
@@ -59,8 +57,7 @@ public class TaskController {
 	}
 
 	@GetMapping("/ajouter")
-	public String getAddNewTaskForm(Model model, 
-			@RequestParam(name = "iduserconnect") Long id_client) {
+	public String getAddNewTaskForm(Model model, @RequestParam(name = "iduserconnect") Long id_client) {
 		User userConnect = ur.getOne(id_client);
 		if (userConnect != null) {
 			Task task = new Task();
@@ -72,9 +69,7 @@ public class TaskController {
 	}
 
 	@PostMapping("/saveNvTache")
-	public String saveNouveauTask(Model model, 
-			@RequestParam(name = "iduserconnect") Long id_user, 
-			Task task) {
+	public String saveNouveauTask(Model model, @RequestParam(name = "iduserconnect") Long id_user, Task task) {
 		User userconnect = ur.getOne(id_user);
 		System.out.println("userconnect = " + userconnect.getId_user() + " --- " + userconnect.getUsername());
 		System.out.println("task nv = " + task.getTitle() + " --- " + task.getCategory() + " --- " + task.getLabel());
@@ -90,16 +85,15 @@ public class TaskController {
 	}
 
 	@PostMapping("/chercher")
-	public String chercherByMotCle(Model model,
-			@RequestParam(name = "iduserconnect") Long id_user,  
-			@RequestParam(name="motcle") String motcle) {
+	public String chercherByMotCle(Model model, @RequestParam(name = "iduserconnect") Long id_user,
+			@RequestParam(name = "motcle") String motcle) {
 		User userconnect = ur.getOne(id_user);
 		String key = motcle;
 		List<Task> tasksResult = tr.findTaskByIdUser(id_user);
 		if (key.length() == 0 && key.equals(null))
 			model.addAttribute("tasks", tasksResult);
 		else {
-			key = "%"+ key +"%";
+			key = "%" + key + "%";
 			tasksResult = tr.findTaskByIdUserByKey(id_user, key);
 			model.addAttribute("tasks", tasksResult);
 		}
@@ -108,8 +102,7 @@ public class TaskController {
 	}
 
 	@GetMapping("/supprimerTache")
-	public String supprimerTache(Model model, 
-			@RequestParam(name = "idUserConnect") Long id_user,
+	public String supprimerTache(Model model, @RequestParam(name = "idUserConnect") Long id_user,
 			@RequestParam(name = "idtask") Long id_task) {
 		User userConnect = ur.findById(id_user).get(); // récupère user connecte
 		List<Task> listNv = tr.findTaskByIdUser(userConnect.getId_user()); // list de tache proprietaire
@@ -125,8 +118,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "/modifierTache", method = RequestMethod.GET)
-	public String modifierTache(Model model, 
-			@RequestParam(name = "idUserConnect") Long id_user,
+	public String modifierTache(Model model, @RequestParam(name = "idUserConnect") Long id_user,
 			@RequestParam(name = "idtask") Long id_task) {
 		User userConnect = ur.findById(id_user).get();
 		Task taskModif = tr.findById(id_task).get();
@@ -136,9 +128,7 @@ public class TaskController {
 	}
 
 	@PostMapping("/savemodif")
-	public String saveModifTask(Model model, 
-			Task task,
-			@RequestParam(name = "idtask") Long id_task, 
+	public String saveModifTask(Model model, Task task, @RequestParam(name = "idtask") Long id_task,
 			@RequestParam(name = "iduserconnect") Long id_user) {
 		Task taskFind = tr.findById(id_task).get();
 		User userConnect = ur.findById(id_user).get();
@@ -151,17 +141,28 @@ public class TaskController {
 		return "taskModifDetail";
 	}
 
-//	@GetMapping("/trierBy")
-//	public String sortBy(Model model, @RequestParam(name = "iduserconnect") Long id_user, String sortBy) {
-//		User userConnect = ur.findById(id_user).get();	
-//		String colSortBy = sortBy;
-//		System.out.println(" colSortBy " + colSortBy);
-//		List<Task> lisTask = tr.findTaskByIdUser(userConnect.getId_user(), colSortBy);
+	@GetMapping("/trierBy")
+	public String sortBy(Model model,
+//			@RequestParam(name = "iduserconnect") 
+			Long iduserconnect, String sortBy) {
+		if (iduserconnect != null) {
+		User userConnect = ur.findById(iduserconnect).get();
+		System.out.println(" colSortBy : " + sortBy);
+		List<Task> listTask = tr.findTaskByIdUser(userConnect.getId_user());
 //		model.addAttribute("user", userConnect);
-//		model.addAttribute("task", lisTask);
-//		if (userConnect != null) { 
-//			
-//		}
-//		return "taskUser";
-//	}
+//		model.addAttribute("task", listTask);
+		
+			if (sortBy.contentEquals("category")) {
+				listTask = tr.findAllTaskSortByCategory(userConnect.getId_user());
+			} else if (sortBy.contentEquals("label")) {
+				listTask = tr.findAllTaskSortByLabel(userConnect.getId_user());
+			} else if (sortBy.contentEquals("title")) {
+				listTask = tr.findAllTaskSortByTitle(userConnect.getId_user());
+			}
+			model.addAttribute("user", userConnect);
+			model.addAttribute("tasks", listTask);
+			return "taskUser";
+		}
+		else return "redirect:/";
+	}
 }
